@@ -185,3 +185,22 @@ geometric by design.
 - **DJVU/XPS/CHM/DOC** open via external converters when installed; there is
   no native renderer for these formats in this build.
 - **Comparison** is line-based, not semantic.
+## D-XX — GitHub distribution via NSIS installer (2026-09-10)
+
+**Decision:** Publish the app at `github.com/freedoom122/OmniReaderPro` and
+distribute the one-time installer as a release asset rather than in-repo.
+
+**Rationale:**
+
+- GitHub blocks files > 100 MB in git but allows up to 2 GB per release asset;
+  the 157 MB installer belongs in Releases.
+- Inno Setup was unavailable; NSIS 3.11 (zlib-licensed, portable ZIP from
+  SourceForge) was used instead — per-user install (`RequestExecutionLevel
+  user`), no UAC, LZMA solid compression (569 MB → 157 MB), Start Menu +
+  desktop shortcuts, proper uninstaller, uninstall registry entry.
+- The existing home-directory git checkout pointed at an unrelated public
+  repo (`DoomSMP`); a fresh dedicated repository was created for the project.
+- Build pipeline: PyInstaller (windowed, no console) → `packaging/dist/`
+  staging copy → `tools/nsis-3.11/Bin/makensis.exe packaging/installer.nsi`
+  → `OmniReaderPro-Setup-1.0.0.exe` (+ SHA-256 sidecar). Installer binaries
+  and the NSIS toolchain are gitignored; only sources are versioned.

@@ -46,8 +46,12 @@ palette, and a deliberately restrained visual identity.
 
 ### Packaged build
 
-Run the installer (`OmniReaderPro-Setup-*.exe`), or run the portable build
-directly from `dist/OmniReaderPro/OmniReaderPro.exe`. No terminal is required.
+Download the one-time installer from the
+[releases page](https://github.com/freedoom122/OmniReaderPro/releases/latest)
+and run `OmniReaderPro-Setup-1.0.0.exe`. It installs to
+`%LOCALAPPDATA%\OmniReaderPro`, creates Start Menu and desktop shortcuts, and
+requires no admin rights. A `.sha256` checksum file is published next to the
+installer for verification. No terminal is required.
 
 Optional runtime components (detected automatically, not bundled):
 
