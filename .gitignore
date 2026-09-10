@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+.env/
+.testenv/
+
+# Build output
+build/
+dist/
+packaging/dist/
+
+# Compiled installer + toolchain (release artifacts stay out of git)
+*.exe
+*.exe.sha256
+tools/
+*.spec.bak
+
+# PyInstaller working dirs
+*.manifest
+
+# App data (when running from source with a local data dir)
+appdata/
+*.oritem
+
+# OS noise
+Thumbs.db
+.DS_Store

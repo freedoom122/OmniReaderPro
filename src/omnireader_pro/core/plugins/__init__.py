@@ -1,0 +1,1 @@
+"""Plugin subsystem with a permission model."""

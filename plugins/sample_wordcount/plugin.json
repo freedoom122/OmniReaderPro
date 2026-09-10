@@ -1,0 +1,11 @@
+{
+  "id": "sample_wordcount",
+  "name": "Word Count",
+  "version": "1.0.0",
+  "entry": "main.py",
+  "permissions": [
+    "document.read"
+  ],
+  "description": "Counts words in the open document via the command palette.",
+  "author": "OmniReader"
+}

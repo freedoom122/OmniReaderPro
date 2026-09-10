@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#14100E"/>
+  <!-- document page -->
+  <rect x="148" y="96" width="216" height="288" rx="18" fill="#F4EDE2"/>
+  <rect x="148" y="96" width="216" height="288" rx="18" fill="none" stroke="#B9AC99" stroke-width="6"/>
+  <!-- open-book spine cut -->
+  <path d="M256 120 L256 360" stroke="#E5B25D" stroke-width="10" stroke-linecap="round"/>
+  <!-- left page: O of OmniReader -->
+  <path d="M184 176 a32 32 0 1 0 0.1 0" fill="none" stroke="#C7522A" stroke-width="14" stroke-linecap="round"/>
+  <!-- right page: R of OmniReader -->
+  <path d="M300 176 v56" stroke="#C7522A" stroke-width="14" stroke-linecap="round"/>
+  <path d="M300 208 a22 22 0 1 0 22 22 a14 14 0 0 0 -22 -8 l22 26" fill="none"
+        stroke="#C7522A" stroke-width="14" stroke-linecap="round"/>
+  <!-- text lines -->
+  <path d="M176 300 h72" stroke="#8A7B66" stroke-width="10" stroke-linecap="round"/>
+  <path d="M176 324 h56" stroke="#8A7B66" stroke-width="10" stroke-linecap="round"/>
+  <path d="M288 300 h36" stroke="#8A7B66" stroke-width="10" stroke-linecap="round"/>
+  <path d="M288 324 h28" stroke="#8A7B66" stroke-width="10" stroke-linecap="round"/>
+  <!-- underline accent -->
+  <path d="M148 420 h216" stroke="#C7522A" stroke-width="8" stroke-linecap="round"/>
+</svg>

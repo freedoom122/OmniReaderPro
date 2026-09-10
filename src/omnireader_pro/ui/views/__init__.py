@@ -1,0 +1,1 @@
+"""Document view widgets."""

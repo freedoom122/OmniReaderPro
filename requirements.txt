@@ -1,0 +1,36 @@
+# OmniReader Pro — pinned dependencies
+# Python 3.11+ (developed and tested on 3.13 / Windows 11)
+
+# --- GUI ---
+PySide6==6.10.3
+
+# --- Documents ---
+PyMuPDF==1.26.7            # PDF rendering / editing / EPUB text extraction
+pypdf==6.1.3                # fallback PDF operations, encryption probe
+python-docx==1.2.0          # DOCX read/write
+EbookLib==0.19              # EPUB read/write
+openpyxl==3.1.5             # XLSX read
+python-pptx==1.0.2          # PPTX read
+odfpy==1.4.1                # ODT read
+markdown-it-py==3.0.0       # Markdown parsing (CommonMark + tables via extras)
+Pillow==11.3.0              # images, TIFF/WEBP/BMP, icon generation
+
+# --- Text / search ---
+RapidFuzz==3.14.1           # fuzzy search
+chardet==5.2.0              # text encoding detection
+
+# --- Speech ---
+pyttsx3==2.99               # Windows SAPI5 TTS (cross-platform engines)
+
+# --- Security / vault ---
+cryptography==48.0.1        # AES-256-GCM vault, PBKDF2, cert parsing
+
+# --- OCR (optional at runtime) ---
+pytesseract==0.3.13         # requires the Tesseract engine binary on PATH
+
+# --- Comic archives ---
+rarfile==4.2                # CBR support (needs unrar/unar binary, optional)
+
+# --- Dev / packaging ---
+pyinstaller==6.17.0
+pytest==8.4.2
