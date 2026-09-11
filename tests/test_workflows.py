@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pytest
 
-from omnireader_pro.core.documents.registry import open_document
+from veyrion_workspace.core.documents.registry import open_document
 
 
 def test_full_pdf_workflow(sample_pdf, tmp_path):
@@ -60,8 +60,8 @@ def test_full_pdf_workflow(sample_pdf, tmp_path):
 
 def test_library_index_search_workflow(sample_pdf, sample_epub, db):
     """Import docs into the library, index, then search across them."""
-    from omnireader_pro.core.search.engine import SearchEngine
-    from omnireader_pro.storage.repositories import (
+    from veyrion_workspace.core.search.engine import SearchEngine
+    from veyrion_workspace.storage.repositories import (
         DocumentRecord, LibraryRepository,
     )
     repo = LibraryRepository(db)
@@ -97,7 +97,7 @@ def test_offline_mode_blocks_network_translation(settings):
     assert settings.get("privacy", "offline_mode") is True
     # No network module should be reachable when offline is enforced:
     # simulate what the translate dialog checks.
-    from omnireader_pro.core.translation import argos_available
+    from veyrion_workspace.core.translation import argos_available
     offline_ok = argos_available()
     if not offline_ok:
         # The dialog would ask before going online; assert the gate exists.
@@ -129,7 +129,7 @@ def test_password_protected_pdf_prompts(tmp_path):
 
 def test_safe_save_failure_keeps_original(sample_pdf, tmp_path):
     """A failed save must never corrupt the source file."""
-    from omnireader_pro.utils.safeio import atomic_copy
+    from veyrion_workspace.utils.safeio import atomic_copy
     original = sample_pdf.read_bytes()
     # Simulate a save failing: target dir unwritable
     result = open_document(sample_pdf)
@@ -141,7 +141,7 @@ def test_safe_save_failure_keeps_original(sample_pdf, tmp_path):
 
 
 def test_version_history_restores_after_destructive_edit(sample_pdf, tmp_path):
-    from omnireader_pro.core.versioning import VersionStore
+    from veyrion_workspace.core.versioning import VersionStore
     vs = VersionStore(depth=5)
     vs.snapshot_before_save(sample_pdf)
     result = open_document(sample_pdf)

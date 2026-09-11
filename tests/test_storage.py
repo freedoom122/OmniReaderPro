@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import pytest
 
-from omnireader_pro.core.search.engine import SearchEngine
-from omnireader_pro.storage.repositories import (
+from veyrion_workspace.core.search.engine import SearchEngine
+from veyrion_workspace.storage.repositories import (
     AnnotationRecord, AnnotationRepository, DocumentRecord, LibraryRepository,
     NoteRecord, NoteRepository, ProgressRepository, SmartCollectionRepository,
 )
@@ -153,7 +153,7 @@ def test_search_clear_and_reindex(db):
 
 
 def test_search_annotation_only(db):
-    from omnireader_pro.storage.repositories import AnnotationRepository
+    from veyrion_workspace.storage.repositories import AnnotationRepository
     repo = AnnotationRepository(db)
     repo.upsert(AnnotationRecord(uuid="u1", doc_path="C:/docs/a.pdf",
                                  page=1, atype="highlight", note="pivotal insight"))

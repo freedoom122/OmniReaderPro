@@ -1,8 +1,8 @@
-# OmniReader Pro — User Guide
+# Veyrion Workspace — User Guide
 
 **READ. EDIT. ORGANIZE. CREATE.**
 
-This guide walks through the day-to-day use of OmniReader Pro. The command
+This guide walks through the day-to-day use of Veyrion Workspace. The command
 palette (`Ctrl+K`) can jump to almost everything mentioned here — type the
 feature name instead of hunting through menus.
 
@@ -10,7 +10,7 @@ feature name instead of hunting through menus.
 
 ## 1. First launch
 
-The first time you start OmniReader Pro you'll see a short onboarding
+The first time you start Veyrion Workspace you'll see a short onboarding
 screen. Everything on it is optional:
 
 - **Theme** — Light, Dark, OLED, Sepia, or High Contrast (change anytime in
@@ -31,7 +31,7 @@ You can skip onboarding entirely; nothing is required.
 | Drag & drop                 | Drop files anywhere on the window                |
 | Double-click a file         | If the installer registered file associations    |
 | Library panel              | Double-click an item, or right-click → Open      |
-| Command line               | `OmniReaderPro.exe file.pdf file2.epub`          |
+| Command line               | `VeyrionWorkspace.exe file.pdf file2.epub`          |
 
 Each file opens in its own tab. Supported: PDF, EPUB/EPUB3, MOBI/AZW/AZW3,
 CBZ/CBR, DOCX, ODT, RTF, TXT, MD, HTML, CSV, JSON, XML, XLSX, PPTX, and
@@ -355,8 +355,8 @@ logs, backups, plugins).
 
 | What         | Windows                          |
 | ------------ | -------------------------------- |
-| App data     | `%APPDATA%\OmniReader Pro`       |
-| Database     | `...\database\omnireader.db`     |
+| App data     | `%APPDATA%\VeyrionWorkspace`        |
+| Database     | `...\database\veyrion.db`     |
 | Cache        | `...\cache`                      |
 | Logs         | `...\logs`                       |
 | Backups      | `...\backups`                    |

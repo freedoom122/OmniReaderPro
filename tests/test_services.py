@@ -8,24 +8,24 @@ from pathlib import Path
 
 import pytest
 
-from omnireader_pro.core.annotations.service import AnnotationService
-from omnireader_pro.core.comparison import compare_documents
-from omnireader_pro.core.dictionary import Dictionary
-from omnireader_pro.core.plugins.host import PERMISSIONS, PluginHost, PluginManifest
-from omnireader_pro.core.printing.printing import parse_page_range
-from omnireader_pro.core.summarization import keywords, summarize
-from omnireader_pro.core.translation import detect_language
-from omnireader_pro.core.versioning import VersionStore
-from omnireader_pro.services.recovery import SessionJournal
-from omnireader_pro.services.tasks import TaskManager
-from omnireader_pro.storage.repositories import AnnotationRepository
+from veyrion_workspace.core.annotations.service import AnnotationService
+from veyrion_workspace.core.comparison import compare_documents
+from veyrion_workspace.core.dictionary import Dictionary
+from veyrion_workspace.core.plugins.host import PERMISSIONS, PluginHost, PluginManifest
+from veyrion_workspace.core.printing.printing import parse_page_range
+from veyrion_workspace.core.summarization import keywords, summarize
+from veyrion_workspace.core.translation import detect_language
+from veyrion_workspace.core.versioning import VersionStore
+from veyrion_workspace.services.recovery import SessionJournal
+from veyrion_workspace.services.tasks import TaskManager
+from veyrion_workspace.storage.repositories import AnnotationRepository
 
 
 # ---------------------------------------------------------------------------
 # Settings
 # ---------------------------------------------------------------------------
 def test_settings_defaults_and_persistence(data_dir):
-    from omnireader_pro.services.settings import Settings
+    from veyrion_workspace.services.settings import Settings
     s = Settings()
     assert s.get("appearance", "theme") == "light"
     s.set("appearance", "theme", "dark")
@@ -34,7 +34,7 @@ def test_settings_defaults_and_persistence(data_dir):
 
 
 def test_settings_corruption_recovers_with_backup(data_dir):
-    from omnireader_pro.services.settings import Settings
+    from veyrion_workspace.services.settings import Settings
     s = Settings()
     s.set("general", "first_run_complete", True)
     s.file_path = s._file
@@ -47,7 +47,7 @@ def test_settings_corruption_recovers_with_backup(data_dir):
 
 
 def test_settings_invalid_types_dropped(data_dir):
-    from omnireader_pro.services.settings import Settings
+    from veyrion_workspace.services.settings import Settings
     s = Settings()
     s._file.write_text(
         json.dumps({"appearance": {"theme": 42}, "appearance2": []}),
@@ -58,7 +58,7 @@ def test_settings_invalid_types_dropped(data_dir):
 
 
 def test_settings_reset(data_dir):
-    from omnireader_pro.services.settings import Settings
+    from veyrion_workspace.services.settings import Settings
     s = Settings()
     s.set("appearance", "theme", "oled")
     s.reset_section("appearance")
@@ -187,7 +187,7 @@ def test_annotation_service_crud_and_export(db, settings, tmp_path):
 
 
 def test_annotation_import_from_pdf(sample_pdf, settings, db):
-    from omnireader_pro.core.documents.registry import open_document
+    from veyrion_workspace.core.documents.registry import open_document
     result = open_document(sample_pdf)
     e = result.engine
     import fitz
@@ -203,7 +203,7 @@ def test_annotation_import_from_pdf(sample_pdf, settings, db):
 # Conversion
 # ---------------------------------------------------------------------------
 def test_pdf_to_text_and_images(sample_pdf, tmp_path):
-    from omnireader_pro.core.conversion.convert import pdf_to_images, pdf_to_text
+    from veyrion_workspace.core.conversion.convert import pdf_to_images, pdf_to_text
     text_out = pdf_to_text(sample_pdf, tmp_path / "out.txt")
     assert "Page 1" in text_out.read_text(encoding="utf-8")
     imgs = pdf_to_images(sample_pdf, tmp_path / "imgs", "png", dpi=72,
@@ -213,7 +213,7 @@ def test_pdf_to_text_and_images(sample_pdf, tmp_path):
 
 
 def test_text_to_pdf_roundtrip(sample_txt, tmp_path):
-    from omnireader_pro.core.conversion.convert import text_to_pdf
+    from veyrion_workspace.core.conversion.convert import text_to_pdf
     out = text_to_pdf(sample_txt, tmp_path / "typed.pdf", title="Converted")
     assert out.stat().st_size > 500
     import fitz
@@ -224,7 +224,7 @@ def test_text_to_pdf_roundtrip(sample_txt, tmp_path):
 
 
 def test_images_to_pdf(sample_image, sample_dir, tmp_path):
-    from omnireader_pro.core.conversion.convert import images_to_pdf
+    from veyrion_workspace.core.conversion.convert import images_to_pdf
     out = images_to_pdf([sample_image, sample_image], tmp_path / "img.pdf")
     import fitz
     doc = fitz.open(str(out))
@@ -233,13 +233,13 @@ def test_images_to_pdf(sample_image, sample_dir, tmp_path):
 
 
 def test_csv_to_pdf_table(sample_csv, tmp_path):
-    from omnireader_pro.core.conversion.convert import csv_to_pdf_table
+    from veyrion_workspace.core.conversion.convert import csv_to_pdf_table
     out = csv_to_pdf_table(sample_csv, tmp_path / "table.pdf", title="Data")
     assert out.stat().st_size > 500
 
 
 def test_docx_to_markdown(sample_docx, tmp_path):
-    from omnireader_pro.core.conversion.convert import document_to_markdown
+    from veyrion_workspace.core.conversion.convert import document_to_markdown
     out = document_to_markdown(sample_docx, tmp_path / "out.md")
     text = out.read_text(encoding="utf-8")
     assert "# " in text  # headings preserved
@@ -363,7 +363,7 @@ def test_plugin_manifest_validation(data_dir, tmp_path):
 
 
 def test_plugin_permission_enforcement(data_dir, tmp_path):
-    from omnireader_pro.services.settings import Settings
+    from veyrion_workspace.services.settings import Settings
     plugins_dir = data_dir / "plugins"
     _write_plugin(plugins_dir, "reader", ["document.read"],
                   "def activate(facade):\n    facade.open_document('x')\n")
@@ -378,7 +378,7 @@ def test_plugin_permission_enforcement(data_dir, tmp_path):
 
 
 def test_plugin_permission_denied_when_not_declared(data_dir, tmp_path):
-    from omnireader_pro.services.settings import Settings
+    from veyrion_workspace.services.settings import Settings
     plugins_dir = data_dir / "plugins"
     _write_plugin(plugins_dir, "nosy", ["document.read"],
                   "def activate(facade):\n    facade._require('network')\n")
@@ -389,7 +389,7 @@ def test_plugin_permission_denied_when_not_declared(data_dir, tmp_path):
 
 
 def test_plugin_load_all_approved_skips_invalid(data_dir, tmp_path):
-    from omnireader_pro.services.settings import Settings
+    from veyrion_workspace.services.settings import Settings
     plugins_dir = data_dir / "plugins"
     _write_plugin(plugins_dir, "ok_one", ["document.read"])
     host = PluginHost(Settings(), app_api={})

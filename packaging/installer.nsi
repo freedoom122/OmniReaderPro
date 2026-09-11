@@ -1,36 +1,41 @@
-; OmniReader Pro — one-time installer (NSIS 3.x)
-; Builds OmniReaderPro-Setup-1.0.0.exe from packaging/dist/OmniReaderPro.
+; Veyrion Workspace — one-time installer (NSIS 3.x)
+; Builds VeyrionWorkspace-Setup-1.1.0.exe from the PyInstaller output at
+; dist/VeyrionWorkspace, writing the installer to the repository root.
 ; Usage: tools\nsis-3.11\Bin\makensis.exe packaging\installer.nsi
 
-!define APPNAME "OmniReader Pro"
-!define COMPANY "OmniReader"
-!define VERSION "1.0.0"
-!define EXE "OmniReaderPro.exe"
+; NSIS resolves File/OutFile relative to this script's own directory, so
+; '..\' reaches the repository root from packaging/. That keeps the compile
+; independent of the current working directory.
+
+!define APPNAME "Veyrion Workspace"
+!define COMPANY "Veyrion Studios"
+!define VERSION "1.1.0"
+!define EXE "VeyrionWorkspace.exe"
 
 Name "${APPNAME} ${VERSION}"
-OutFile "..\..\OmniReaderPro-Setup-1.0.0.exe"
-InstallDir "$LOCALAPPDATA\OmniReaderPro"
+OutFile "..\VeyrionWorkspace-Setup-1.1.0.exe"
+InstallDir "$LOCALAPPDATA\VeyrionWorkspace"
 InstallDirRegKey HKCU "Software\${COMPANY}\${APPNAME}" "InstallDir"
 RequestExecutionLevel user
 SetCompressor /SOLID lzma
 
 ; ---- Presentation ------------------------------------------------------
-VIProductVersion "1.0.0.0"
+VIProductVersion "1.1.0.0"
 VIAddVersionKey ProductName "${APPNAME}"
 VIAddVersionKey CompanyName "${COMPANY}"
-VIAddVersionKey FileVersion "1.0.0.0"
-VIAddVersionKey ProductVersion "1.0.0.0"
+VIAddVersionKey FileVersion "1.1.0.0"
+VIAddVersionKey ProductVersion "1.1.0.0"
 VIAddVersionKey FileDescription "${APPNAME} Installer"
 VIAddVersionKey LegalCopyright "MIT License"
 
-Icon "..\resources\icons\omnireader.ico"
-UninstallIcon "..\resources\icons\omnireader.ico"
+Icon "..\resources\icons\veyrion.ico"
+UninstallIcon "..\resources\icons\veyrion.ico"
 Caption "${APPNAME} ${VERSION} Setup"
 BrandingText "${APPNAME} — READ. EDIT. ORGANIZE. CREATE."
 
 !include "MUI2.nsh"
-!define MUI_ICON "..\resources\icons\omnireader.ico"
-!define MUI_UNICON "..\resources\icons\omnireader.ico"
+!define MUI_ICON "..\resources\icons\veyrion.ico"
+!define MUI_UNICON "..\resources\icons\veyrion.ico"
 !define MUI_ABORTWARNING
 !define MUI_FINISHPAGE_RUN "$INSTDIR\${EXE}"
 !define MUI_FINISHPAGE_RUN_TEXT "Launch ${APPNAME}"
@@ -45,8 +50,22 @@ BrandingText "${APPNAME} — READ. EDIT. ORGANIZE. CREATE."
 
 ; ---- Install -----------------------------------------------------------
 Section "Install"
+  ; Remove a previous-name install so upgrading users never end up with two
+  ; copies side by side after the rebrand. The folder removal is guarded by
+  ; an executable check, so a tampered registry value cannot make the
+  ; installer delete an unrelated directory.
+  Delete "$DESKTOP\OmniReader Pro.lnk"
+  Delete "$SMPROGRAMS\OmniReader\OmniReader Pro.lnk"
+  RMDir "$SMPROGRAMS\OmniReader"
+  ReadRegStr $0 HKCU "Software\OmniReader\OmniReader Pro" "InstallDir"
+  IfFileExists "$0\OmniReaderPro.exe" 0 legacy_cleanup_done
+    RMDir /r "$0"
+  legacy_cleanup_done:
+  DeleteRegKey HKCU "Software\OmniReader\OmniReader Pro"
+  DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\OmniReader Pro"
+
   SetOutPath "$INSTDIR"
-  File /r "dist\OmniReaderPro\*.*"
+  File /r "..\dist\VeyrionWorkspace\*.*"
 
   ; Start Menu shortcut
   CreateDirectory "$SMPROGRAMS\${COMPANY}"
@@ -78,5 +97,5 @@ Section "Uninstall"
   RMDir /r "$INSTDIR"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
   DeleteRegKey HKCU "Software\${COMPANY}\${APPNAME}"
-  ; User documents, settings, and library data in %APPDATA%\OmniReaderPro are preserved.
+  ; User documents, settings, and library data in %APPDATA%\VeyrionWorkspace are preserved.
 SectionEnd

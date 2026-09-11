@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from omnireader_pro.core.documents.registry import open_document
+from veyrion_workspace.core.documents.registry import open_document
 
 
 def test_open_pdf(sample_pdf):
@@ -16,7 +16,7 @@ def test_open_pdf(sample_pdf):
     assert "Page 1" in e.page_text(0)
     md = e.metadata()
     assert md.title == "Sample PDF"
-    assert md.author == "OmniReader Tests"
+    assert md.author == "Veyrion Tests"
     assert md.word_count > 10
     e.close()
 

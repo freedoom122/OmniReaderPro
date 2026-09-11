@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""OmniReader Pro — end-to-end workflow demonstration.
+"""Veyrion Workspace - end-to-end workflow demonstration.
 
 Runs the full product loop headlessly and prints a report:
 
@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "src"))
 
 # Redirect all app data so the demo never touches the real user database.
-os.environ["OMNIREADER_DATA_DIR"] = str(Path(tempfile.mkdtemp(prefix="or_demo_")))
+os.environ["VEYRION_DATA_DIR"] = str(Path(tempfile.mkdtemp(prefix="or_demo_")))
 
 import fitz  # noqa: E402
 
@@ -39,29 +39,29 @@ def check(label: str, ok: bool, detail: str = "") -> None:
         PASS += 1
     else:
         FAIL += 1
-    print(f"  [{status}] {label}" + (f" — {detail}" if detail and not ok else ""))
+    print(f"  [{status}] {label}" + (f" - {detail}" if detail and not ok else ""))
 
 
 def main() -> int:
     print("=" * 64)
-    print("OmniReader Pro — end-to-end demo")
+    print("Veyrion Workspace - end-to-end demo")
     print("=" * 64)
 
     work = Path(tempfile.mkdtemp(prefix="or_demo_work_"))
 
     # ---------------------------------------------------------------- 1. open
     print("\n[1] Document engines: PDF, EPUB, DOCX, text, comic, image")
-    from omnireader_pro.core.documents.registry import open_document
+    from veyrion_workspace.core.documents.registry import open_document
 
     pdf_path = work / "demo.pdf"
     doc = fitz.open()
     for i in range(8):
         page = doc.new_page()
-        page.insert_text((72, 100), f"Page {i + 1} — the quick brown fox")
+        page.insert_text((72, 100), f"Page {i + 1} - the quick brown fox")
         page.insert_text((72, 130), f"Confidential draft revision {i}")
         if i == 0:
             page.insert_text((72, 170), "Executive summary for the quarterly report")
-    doc.set_metadata({"title": "Demo Document", "author": "OmniReader Demo"})
+    doc.set_metadata({"title": "Demo Document", "author": "Veyrion Demo"})
     doc.save(str(pdf_path))
     doc.close()
 
@@ -88,7 +88,7 @@ def main() -> int:
 
     # ----------------------------------------------------------------- 4. save
     print("\n[4] Atomic save + version history")
-    from omnireader_pro.core.versioning import VersionStore
+    from veyrion_workspace.core.versioning import VersionStore
     vs = VersionStore(depth=3)
     saved = work / "demo_annotated.pdf"
     e.save(saved)
@@ -111,7 +111,7 @@ def main() -> int:
 
     # ------------------------------------------------------- 6. convert/export
     print("\n[6] Conversion")
-    from omnireader_pro.core.conversion.convert import (
+    from veyrion_workspace.core.conversion.convert import (
         document_to_markdown, pdf_to_images, pdf_to_text,
     )
     txt = pdf_to_text(saved, work / "demo.txt")
@@ -123,16 +123,16 @@ def main() -> int:
 
     # ------------------------------------------------------------- 7. compare
     print("\n[7] Comparison")
-    from omnireader_pro.core.comparison import compare_documents
+    from veyrion_workspace.core.comparison import compare_documents
     result = compare_documents(saved, edited)
     check("compare reports diffs", result.pages_compared == 8 and not result.identical)
     check("compare page-level diff", result.pages_changed >= 1)
 
     # ---------------------------------------------------- 8. library + search
     print("\n[8] Library index + global search")
-    from omnireader_pro.storage.database import Database
-    from omnireader_pro.storage.repositories import DocumentRecord, LibraryRepository
-    from omnireader_pro.core.search.engine import SearchEngine
+    from veyrion_workspace.storage.database import Database
+    from veyrion_workspace.storage.repositories import DocumentRecord, LibraryRepository
+    from veyrion_workspace.core.search.engine import SearchEngine
     db = Database()
     repo = LibraryRepository(db)
     se = SearchEngine(db)
@@ -147,7 +147,7 @@ def main() -> int:
 
     # -------------------------------------------------------------- 9. vault
     print("\n[9] Secure vault")
-    from omnireader_pro.core.security.vault import Vault
+    from veyrion_workspace.core.security.vault import Vault
     vault_dir = work / "vault"
     v = Vault(vault_dir)
     v.create("correct horse battery staple")
@@ -160,11 +160,11 @@ def main() -> int:
 
     # ---------------------------------------------------------- 10. redaction
     print("\n[10] Redaction + verification")
-    from omnireader_pro.core.documents.pdf_engine import verify_redaction_in_file
+    from veyrion_workspace.core.documents.pdf_engine import verify_redaction_in_file
     red = work / "redacted.pdf"
     e4 = open_document(saved).engine
-    # "Confidential draft revision N" appears on every page (y≈130): mark
-    # every page, then apply — the verifier must find nothing afterwards.
+    # "Confidential draft revision N" appears on every page (y~130): mark
+    # every page, then apply - the verifier must find nothing afterwards.
     for pno in range(e4.page_count):
         e4.add_redaction(pno, (60, 120, 400, 145))
     e4.apply_redactions()
@@ -177,7 +177,7 @@ def main() -> int:
 
     # ------------------------------------------------------------ 11. finish
     print("\n" + "=" * 64)
-    print(f"DEMO COMPLETE — {PASS} passed, {FAIL} failed")
+    print(f"DEMO COMPLETE - {PASS} passed, {FAIL} failed")
     print("=" * 64)
     shutil.rmtree(work, ignore_errors=True)
     return 0 if FAIL == 0 else 1

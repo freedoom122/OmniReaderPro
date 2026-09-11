@@ -1,4 +1,4 @@
-# OmniReader Pro — Decision Log
+# Veyrion Workspace — Decision Log
 
 This file records significant engineering decisions and their rationale, so
 future maintainers (and users who care) can see *why* the software is built
@@ -157,8 +157,8 @@ real, verifiable, and useful.
 ## Packaging
 
 ### PyInstaller one-folder, windowed build
-**Decision:** `packaging/omnireader.spec` produces a console-less
-`OmniReaderPro.exe` with the app icon; Inno Setup (`installer/`) adds
+**Decision:** `packaging/veyrion.spec` produces a console-less
+`VeyrionWorkspace.exe` with the app icon; Inno Setup (`installer/`) adds
 shortcuts, per-user file associations, and clean uninstall.
 **Why:** No console window is a hard requirement. One-folder (not one-file)
 reduces startup time and antivirus false positives while still being
@@ -185,9 +185,39 @@ geometric by design.
 - **DJVU/XPS/CHM/DOC** open via external converters when installed; there is
   no native renderer for these formats in this build.
 - **Comparison** is line-based, not semantic.
-## D-XX — GitHub distribution via NSIS installer (2026-09-10)
 
-**Decision:** Publish the app at `github.com/freedoom122/OmniReaderPro` and
+## Branding — product renamed to Veyrion Workspace (2026-09-11)
+
+**Decision:** Ship the product as **Veyrion Workspace**, published by
+**Veyrion Studios**, and carry existing user data forward automatically.
+
+**Rationale:**
+
+- The product name should reflect the studio that publishes it. The executable
+  is `VeyrionWorkspace.exe`, the organization is `Veyrion Studios`, the
+  app-data folder is `VeyrionWorkspace`, and release artifacts are
+  `VeyrionWorkspace-Setup-<version>.exe`.
+- The Python import package moved to `veyrion_workspace`; the logger namespace
+  and the single-instance server name follow the same slug, so no surface still
+  carries the old name.
+- **Data safety came first.** `app.paths.migrate_legacy_data()` copies settings,
+  database, notes, vault, sessions, backups, and plugins out of the former
+  `%APPDATA%\OmniReader Pro` root and renames `omnireader.*` files to
+  `veyrion.*`. Derived data (cache, tmp) is deliberately not copied, the
+  original directory is never deleted, and a failed copy is rolled back so a
+  half-written workspace can never be presented as valid. Covered by
+  `tests/test_migration.py`.
+- The installer removes a previous-name install directory and its shortcuts on
+  upgrade, guarded by an executable check so a tampered registry value cannot
+  delete an unrelated directory.
+- Brand assets were redrawn, not merely renamed: the icon is now a Veyrion "V"
+  on a folded document page, and `scripts/make_sample_documents.py` regenerates
+  the bundled welcome PDF from the current brand and version.
+- No feature behaviour changed; 1.1.0 is identity-only.
+
+## Distribution — GitHub releases via NSIS installer (2026-09-10)
+
+**Decision:** Publish the app at `github.com/freedoom122/VeyrionWorkspace` and
 distribute the one-time installer as a release asset rather than in-repo.
 
 **Rationale:**
@@ -202,5 +232,7 @@ distribute the one-time installer as a release asset rather than in-repo.
   repo (`DoomSMP`); a fresh dedicated repository was created for the project.
 - Build pipeline: PyInstaller (windowed, no console) → `packaging/dist/`
   staging copy → `tools/nsis-3.11/Bin/makensis.exe packaging/installer.nsi`
-  → `OmniReaderPro-Setup-1.0.0.exe` (+ SHA-256 sidecar). Installer binaries
+  → `OmniReaderPro-Setup-1.0.0.exe` under the former product name (+ SHA-256
+  sidecar); later releases ship as `VeyrionWorkspace-Setup-<version>.exe` (see
+  Branding). Installer binaries
   and the NSIS toolchain are gitignored; only sources are versioned.

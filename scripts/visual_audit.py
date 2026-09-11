@@ -2,7 +2,7 @@
 """Visual audit: boot the real MainWindow, open a PDF, cycle themes,
 toggle every dock, verify layout invariants, and capture screenshots.
 
-Screenshots land in artifacts/visual_audit/*.png — inspect them for
+Screenshots land in artifacts/visual_audit/*.png - inspect them for
 polish issues (spacing, contrast, dock behavior).
 """
 from __future__ import annotations
@@ -13,7 +13,7 @@ import tempfile
 from pathlib import Path
 
 os.environ["QT_QPA_PLATFORM"] = "offscreen"
-os.environ["OMNIREADER_DATA_DIR"] = str(
+os.environ["VEYRION_DATA_DIR"] = str(
     Path(tempfile.mkdtemp(prefix="or_audit_")))
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -34,7 +34,7 @@ def check(label: str, ok: bool, detail: str = "") -> None:
         print(f"  [PASS] {label}")
     else:
         FAIL += 1
-        print(f"  [FAIL] {label}" + (f" — {detail}" if detail else ""))
+        print(f"  [FAIL] {label}" + (f" - {detail}" if detail else ""))
 
 
 import time as _time
@@ -50,15 +50,15 @@ def settle(app, ms: int = 120) -> None:
 
 def main() -> int:
     print("=" * 64)
-    print("OmniReader Pro — visual audit")
+    print("Veyrion Workspace - visual audit")
     print("=" * 64)
 
-    from omnireader_pro.services.settings import Settings
-    from omnireader_pro.services.tasks import TaskManager
-    from omnireader_pro.storage.database import Database
-    from omnireader_pro.services.recovery import SessionJournal
-    from omnireader_pro.ui.theme import THEMES, build_qss, get_palette
-    from omnireader_pro.ui.main_window import MainWindow
+    from veyrion_workspace.services.settings import Settings
+    from veyrion_workspace.services.tasks import TaskManager
+    from veyrion_workspace.storage.database import Database
+    from veyrion_workspace.services.recovery import SessionJournal
+    from veyrion_workspace.ui.theme import THEMES, build_qss, get_palette
+    from veyrion_workspace.ui.main_window import MainWindow
 
     app = QApplication(sys.argv)
     settings = Settings()
@@ -67,7 +67,7 @@ def main() -> int:
     settings.set("appearance", "theme", "light")
     db = Database()
     tasks = TaskManager(2)
-    journal = SessionJournal(Path(os.environ["OMNIREADER_DATA_DIR"]) / "sessions")
+    journal = SessionJournal(Path(os.environ["VEYRION_DATA_DIR"]) / "sessions")
     journal.acquire_lock()
 
     w = MainWindow(settings, db, tasks, journal)
@@ -176,7 +176,7 @@ def main() -> int:
 
     # -------------------------------------------------------------- 5. finish
     print("\n" + "=" * 64)
-    print(f"AUDIT COMPLETE — {PASS} passed, {FAIL} failed")
+    print(f"AUDIT COMPLETE - {PASS} passed, {FAIL} failed")
     print(f"Screenshots: {out_dir}")
     print("=" * 64)
 

@@ -1,8 +1,8 @@
 # Third-Party Licenses
 
-OmniReader Pro is MIT-licensed (see `LICENSE`). This file lists the
+Veyrion Workspace is MIT-licensed (see `LICENSE`). This file lists the
 libraries the application depends on, their licenses, and notes where they
-apply. All are compatible with distributing OmniReader Pro.
+apply. All are compatible with distributing Veyrion Workspace.
 
 Licenses referenced: MIT, BSD-2/3-Clause, Apache-2.0, LGPL-2.1/3.0, ISC,
 HPND (historically: Python Software Foundation license), Zlib, MPL-2.0.
@@ -38,7 +38,7 @@ HPND (historically: Python Software Foundation license), Zlib, MPL-2.0.
 - **PyMuPDF & EbookLib (AGPL-3.0):** AGPL obligations apply to
   *distributing* these libraries' code and to network-interacting
   modifications of them. They are used unmodified as libraries. **If you
-  distribute OmniReader Pro commercially, review the AGPL requirements
+  distribute Veyrion Workspace commercially, review the AGPL requirements
   (offer of source for the library, license notice, and — if the
   application is made available to users over a network — the corresponding
   source offer for AGPL-covered code).** If AGPL is unacceptable for your
@@ -59,7 +59,7 @@ HPND (historically: Python Software Foundation license), Zlib, MPL-2.0.
 
 ## Bundled data
 
-- **Dictionary source:** OmniReader Pro ships a wordnet-style lexical data
+- **Dictionary source:** Veyrion Workspace ships a wordnet-style lexical data
   source (public-domain word lists and Princeton WordNet data under its
   permissive license). It is used only for offline dictionary lookup.
 

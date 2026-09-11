@@ -29,8 +29,8 @@ def _settle(app, seconds=0.2):
 
 
 def test_theme_and_icons(qapp):
-    from omnireader_pro.ui.theme import THEMES, build_qss, get_palette
-    from omnireader_pro.ui.icons import available_icons, icon, make_window_icon
+    from veyrion_workspace.ui.theme import THEMES, build_qss, get_palette
+    from veyrion_workspace.ui.icons import available_icons, icon, make_window_icon
     for name in THEMES:
         qss = build_qss(get_palette(name))
         assert len(qss) > 5000
@@ -40,8 +40,8 @@ def test_theme_and_icons(qapp):
 
 
 def test_pdf_view_constructs(qapp, data_dir, sample_pdf):
-    from omnireader_pro.core.documents.registry import open_document
-    from omnireader_pro.ui.views.pdf_view import PdfView
+    from veyrion_workspace.core.documents.registry import open_document
+    from veyrion_workspace.ui.views.pdf_view import PdfView
     result = open_document(sample_pdf)
     v = PdfView(result.engine)
     v.resize(900, 700)
@@ -63,11 +63,11 @@ def test_pdf_view_constructs(qapp, data_dir, sample_pdf):
 
 
 def test_main_window_smoke(qapp, data_dir, sample_pdf):
-    from omnireader_pro.services.recovery import SessionJournal
-    from omnireader_pro.services.settings import Settings
-    from omnireader_pro.services.tasks import TaskManager
-    from omnireader_pro.storage.database import Database
-    from omnireader_pro.ui.main_window import MainWindow
+    from veyrion_workspace.services.recovery import SessionJournal
+    from veyrion_workspace.services.settings import Settings
+    from veyrion_workspace.services.tasks import TaskManager
+    from veyrion_workspace.storage.database import Database
+    from veyrion_workspace.ui.main_window import MainWindow
     settings = Settings()
     db = Database()
     tasks = TaskManager(2)
@@ -76,7 +76,7 @@ def test_main_window_smoke(qapp, data_dir, sample_pdf):
     w.resize(1200, 800)
     w.show()
     _settle(qapp)
-    assert w.windowTitle().startswith("OmniReader Pro")
+    assert w.windowTitle().startswith("Veyrion Workspace")
     w.open_path(str(sample_pdf))
     _settle(qapp)
     assert w.tabs.count() == 1
@@ -101,20 +101,20 @@ def test_main_window_smoke(qapp, data_dir, sample_pdf):
 
 
 def test_all_dialogs_construct(qapp, data_dir, sample_pdf):
-    from omnireader_pro.core.documents.registry import open_document
-    from omnireader_pro.services.settings import Settings
-    from omnireader_pro.services.tasks import TaskManager
-    from omnireader_pro.storage.database import Database
-    from omnireader_pro.ui.dialogs import (
+    from veyrion_workspace.core.documents.registry import open_document
+    from veyrion_workspace.services.settings import Settings
+    from veyrion_workspace.services.tasks import TaskManager
+    from veyrion_workspace.storage.database import Database
+    from veyrion_workspace.ui.dialogs import (
         AboutDialog, CompareDialog, DictionaryDialog, ExportDialog,
         FindDialog, FormsDialog, MetadataDialog, OptimizeDialog,
         PrintDialog, PrivacyDialog, SignDialog, TranslateDialog, VaultDialog,
         VerifyRedactionDialog,
     )
-    from omnireader_pro.ui.onboarding import OnboardingDialog
-    from omnireader_pro.ui.presentation import PresentationWindow
-    from omnireader_pro.ui.settings_dialog import SettingsDialog
-    from omnireader_pro.ui.views.pdf_view import PdfView
+    from veyrion_workspace.ui.onboarding import OnboardingDialog
+    from veyrion_workspace.ui.presentation import PresentationWindow
+    from veyrion_workspace.ui.settings_dialog import SettingsDialog
+    from veyrion_workspace.ui.views.pdf_view import PdfView
     settings = Settings()
     tasks = TaskManager(2)
     db = Database()
@@ -144,9 +144,9 @@ def test_all_dialogs_construct(qapp, data_dir, sample_pdf):
 
 
 def test_split_view_constructs(qapp, data_dir, sample_pdf):
-    from omnireader_pro.core.documents.registry import open_document
-    from omnireader_pro.ui.split_view import SplitView
-    from omnireader_pro.ui.views.pdf_view import PdfView
+    from veyrion_workspace.core.documents.registry import open_document
+    from veyrion_workspace.ui.split_view import SplitView
+    from veyrion_workspace.ui.views.pdf_view import PdfView
     r1 = open_document(sample_pdf)
     v1 = PdfView(r1.engine)
     v2 = PdfView(r1.engine)
@@ -162,9 +162,9 @@ def test_split_view_constructs(qapp, data_dir, sample_pdf):
 def test_view_factory_all_formats(qapp, data_dir, sample_pdf, sample_epub,
                                   sample_docx, sample_txt, sample_md,
                                   sample_cbz, sample_image, sample_csv):
-    from omnireader_pro.core.documents.registry import open_document
-    from omnireader_pro.services.settings import Settings
-    from omnireader_pro.ui.views.factory import create_view
+    from veyrion_workspace.core.documents.registry import open_document
+    from veyrion_workspace.services.settings import Settings
+    from veyrion_workspace.ui.views.factory import create_view
     s = Settings()
     expected = {
         sample_pdf: "PdfView", sample_epub: "EpubView",

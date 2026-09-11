@@ -8,15 +8,15 @@ from pathlib import Path
 
 import pytest
 
-from omnireader_pro.core.documents.pdf_engine import verify_redaction_in_file
-from omnireader_pro.core.security.privacy import inspect_metadata, strip_metadata
-from omnireader_pro.core.security.vault import (
+from veyrion_workspace.core.documents.pdf_engine import verify_redaction_in_file
+from veyrion_workspace.core.security.privacy import inspect_metadata, strip_metadata
+from veyrion_workspace.core.security.vault import (
     InvalidPasswordError, Vault, VaultError, VaultLockedError,
 )
-from omnireader_pro.utils.pathutils import (
+from veyrion_workspace.utils.pathutils import (
     PathSafetyError, ensure_within, safe_filename, validate_path,
 )
-from omnireader_pro.utils.safeio import (
+from veyrion_workspace.utils.safeio import (
     atomic_write_text, extract_zip_safe, secure_delete,
 )
 
@@ -199,7 +199,7 @@ def test_redaction_removes_content(tmp_path):
     doc.save(str(path))
     doc.close()
 
-    from omnireader_pro.core.documents.registry import open_document
+    from veyrion_workspace.core.documents.registry import open_document
     result = open_document(path)
     e = result.engine
     import fitz as fz

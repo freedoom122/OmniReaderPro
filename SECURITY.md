@@ -1,4 +1,4 @@
-# OmniReader Pro — Security
+# Veyrion Workspace — Security
 
 This document describes the security model honestly: what is protected, how,
 and — just as importantly — what is *not* guaranteed. We do not claim

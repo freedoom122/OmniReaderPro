@@ -1,8 +1,8 @@
-# OmniReader Pro
+# Veyrion Workspace
 
 **READ. EDIT. ORGANIZE. CREATE.**
 
-OmniReader Pro is a local-first desktop document workspace: a PDF reader and
+Veyrion Workspace is a local-first desktop document workspace: a PDF reader and
 editor, e-book reader, comic viewer, annotation workspace, OCR tool, document
 library, conversion utility, and secure document vault — in one application.
 
@@ -47,11 +47,18 @@ palette, and a deliberately restrained visual identity.
 ### Packaged build
 
 Download the one-time installer from the
-[releases page](https://github.com/freedoom122/OmniReaderPro/releases/latest)
-and run `OmniReaderPro-Setup-1.0.0.exe`. It installs to
-`%LOCALAPPDATA%\OmniReaderPro`, creates Start Menu and desktop shortcuts, and
+[releases page](https://github.com/freedoom122/VeyrionWorkspace/releases/latest)
+and run `VeyrionWorkspace-Setup-1.1.0.exe`. It installs to
+`%LOCALAPPDATA%\VeyrionWorkspace`, creates Start Menu and desktop shortcuts, and
 requires no admin rights. A `.sha256` checksum file is published next to the
 installer for verification. No terminal is required.
+
+> **Upgrading from the former name.** If you have run the earlier
+> `OmniReaderPro` build, Veyrion Workspace carries your library, settings,
+> vault, and session journal into `%APPDATA%\VeyrionWorkspace` on first launch,
+> renaming the old database and log files as it goes. Your original folder is
+> left untouched, and the installer removes the previous install directory and
+> its shortcuts so you never end up with two copies installed side by side.
 
 Optional runtime components (detected automatically, not bundled):
 
@@ -67,7 +74,7 @@ Optional runtime components (detected automatically, not bundled):
 python -m venv .venv
 .venv\Scripts\activate            # Windows
 pip install -r requirements.txt
-python run_omnireader.py          # or double-click run_omnireader.pyw
+python run_veyrion.py          # or double-click run_veyrion.pyw
 ```
 
 On Linux: `source .venv/bin/activate`; install Tesseract via your package
@@ -78,10 +85,10 @@ manager for OCR.
 ```powershell
 .\scripts\build_windows.ps1       # generates icons + runs PyInstaller
 # Installer (optional, needs Inno Setup):
-ISCC.exe installer\omnireader_setup.iss
+ISCC.exe installer\veyrion_setup.iss
 ```
 
-See `packaging/omnireader.spec` for the PyInstaller configuration (windowed,
+See `packaging/veyrion.spec` for the PyInstaller configuration (windowed,
 no console, app icon, versioned output).
 
 ## Quick start
@@ -158,7 +165,7 @@ All shortcuts are customizable in Settings → Keyboard.
 ## Architecture
 
 ```
-src/omnireader_pro/
+src/veyrion_workspace/
   app/          bootstrap, paths, logging
   core/         document engines, annotations, search, ocr, tts, security,
                 conversion, comparison, printing, plugins, updates
@@ -195,7 +202,7 @@ engineering decisions log.
 | -------------------------------- | ------------------------------------------------------------------- |
 | OCR menu disabled                | Install Tesseract and add it to `PATH` (Settings → OCR shows engine path) |
 | `.cbr` comics won't open         | Install `unrar` (Windows: add to PATH) — fallback is archive listing |
-| App data location                | `%APPDATA%\OmniReader Pro` (Windows), `~/.local/share/OmniReader Pro` (Linux), `~/Library/Application Support` (macOS) |
+| App data location                | `%APPDATA%\VeyrionWorkspace` (Windows), `~/.local/share/VeyrionWorkspace` (Linux), `~/Library/Application Support/VeyrionWorkspace` (macOS) |
 | Logs                             | `Help → Diagnostics → Open Logs Folder`                              |
 | A file won't open                | The error dialog states why; unknown formats offer conversion        |
 | Crash on startup                 | Check `logs/`; delete `settings.json` to restore defaults (a backup is kept automatically) |
@@ -207,11 +214,11 @@ engineering decisions log.
 ```
 
 The suite is hermetic: sample documents are generated on the fly with the
-same libraries the app ships, and `OMNIREADER_DATA_DIR` redirects all app
+same libraries the app ships, and `VEYRION_DATA_DIR` redirects all app
 data to a temp dir so the real user database is never touched.
 
 ## License
 
-OmniReader Pro is licensed under the MIT License (see `LICENSE`).
+Veyrion Workspace is licensed under the MIT License (see `LICENSE`).
 Third-party dependencies and their licenses are listed in
 `THIRD_PARTY_LICENSES.md`.

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#14100E"/>
+  <!-- document page with a folded top-right corner -->
+  <path d="M148 114 a18 18 0 0 1 18 -18 h122 l76 76 v194 a18 18 0 0 1 -18 18 h-180
+           a18 18 0 0 1 -18 -18 z" fill="#F4EDE2" stroke="#B9AC99" stroke-width="6"/>
+  <path d="M288 96 l76 76 h-58 a18 18 0 0 1 -18 -18 z" fill="#E3D8C6" stroke="#B9AC99" stroke-width="6"/>
+  <!-- Veyrion mark -->
+  <path d="M188 196 L256 274 L324 196" fill="none" stroke="#C7522A"
+        stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- baseline rules -->
+  <path d="M176 312 h72" stroke="#8A7B66" stroke-width="10" stroke-linecap="round"/>
+  <path d="M176 336 h44" stroke="#8A7B66" stroke-width="10" stroke-linecap="round"/>
+  <!-- warm accent underline -->
+  <path d="M148 420 h216" stroke="#C7522A" stroke-width="8" stroke-linecap="round"/>
+</svg>

@@ -1,4 +1,4 @@
-# OmniReader Pro — pinned dependencies
+# Veyrion Workspace — pinned dependencies
 # Python 3.11+ (developed and tested on 3.13 / Windows 11)
 
 # --- GUI ---

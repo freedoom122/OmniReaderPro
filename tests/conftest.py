@@ -1,6 +1,6 @@
 """Shared fixtures: isolated app-data dir and sample documents.
 
-Every test gets a fresh OMNIREADER_DATA_DIR so no test touches the real
+Every test gets a fresh VEYRION_DATA_DIR so no test touches the real
 user database. Sample documents are generated with the same libraries the
 app ships, so the suite runs offline and hermetic.
 """
@@ -23,7 +23,7 @@ if str(SRC) not in sys.path:
 @pytest.fixture()
 def data_dir(tmp_path, monkeypatch) -> Path:
     d = tmp_path / "appdata"
-    monkeypatch.setenv("OMNIREADER_DATA_DIR", str(d))
+    monkeypatch.setenv("VEYRION_DATA_DIR", str(d))
     return d
 
 
@@ -45,7 +45,7 @@ def sample_pdf(sample_dir: Path) -> Path:
         page.insert_text((72, 130), f"Alpha beta gamma delta {i}")
         if i == 0:
             page.insert_text((72, 160), "Confidential report summary")
-    doc.set_metadata({"title": "Sample PDF", "author": "OmniReader Tests"})
+    doc.set_metadata({"title": "Sample PDF", "author": "Veyrion Tests"})
     doc.save(str(path))
     doc.close()
     return path
@@ -56,7 +56,7 @@ def sample_epub(sample_dir: Path) -> Path:
     from ebooklib import epub
     path = sample_dir / "sample.epub"
     book = epub.EpubBook()
-    book.set_identifier("omnireader-test-epub")
+    book.set_identifier("veyrion-test-epub")
     book.set_title("Test E-book")
     book.set_language("en")
     book.add_author("Test Author")
@@ -139,7 +139,7 @@ def sample_csv(sample_dir: Path) -> Path:
 
 @pytest.fixture()
 def db(data_dir: Path):
-    from omnireader_pro.storage.database import Database
+    from veyrion_workspace.storage.database import Database
     database = Database()
     yield database
     database.close()
@@ -147,5 +147,5 @@ def db(data_dir: Path):
 
 @pytest.fixture()
 def settings(data_dir: Path):
-    from omnireader_pro.services.settings import Settings
+    from veyrion_workspace.services.settings import Settings
     return Settings()

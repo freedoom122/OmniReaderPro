@@ -1,7 +1,46 @@
 # Changelog
 
-All notable changes to OmniReader Pro are recorded here.
+All notable changes to Veyrion Workspace are recorded here.
 Format based on [Keep a Changelog](https://keepachangelog.com/).
+
+## [1.1.0] — 2026-09-11
+
+Product rebrand to **Veyrion Workspace**, published by **Veyrion Studios**.
+No functional changes: every existing feature behaves exactly as before.
+
+### Changed
+
+- **Name and identity** — window title, About dialog, onboarding, executable
+  (`VeyrionWorkspace.exe`), install directory, and installer are rebranded. The
+  application organization is now `Veyrion Studios`.
+- **App data** — user data lives in `%APPDATA%\VeyrionWorkspace`.
+- **Icon** — new mark (a Veyrion "V" on a folded document page) replacing the
+  previous monogram, regenerated at all seven icon sizes.
+- **Python package** — the import path is now `veyrion_workspace`.
+- **Source layout** — `run_veyrion.py` / `run_veyrion.pyw`,
+  `packaging/veyrion.spec`, `installer/veyrion_setup.iss`, and
+  `resources/icons/veyrion.*`.
+
+### Added
+
+- **Automatic upgrade migration** — a workspace created under the previous name
+  is copied into the new location on first launch (settings, database, notes,
+  vault, sessions, backups, plugins), with `omnireader.*` files renamed to
+  `veyrion.*`. Derived caches are skipped, the original folder is preserved, and
+  a failed copy rolls back rather than leaving a half-written workspace.
+- `scripts/make_sample_documents.py` — regenerates the bundled welcome PDF from
+  the current brand and version, so it can never drift from the release.
+- `tests/test_migration.py` — 11 tests covering the migration path.
+
+### Fixed
+
+- The Inno Setup script had an invalid `AppId` GUID and pointed at the wrong
+  app-data folder; both corrected. (NSIS remains the shipped installer.)
+- The NSIS installer now removes a previous-name install directory and its
+  shortcuts during an upgrade, guarded by an executable check so a tampered
+  registry value cannot delete an unrelated directory.
+- The welcome PDF's footer used a non-Latin-1 separator that extracted as a
+  replacement character; the generator now emits ASCII punctuation only.
 
 ## [1.0.0] — 2026-09-09
 
@@ -92,10 +131,10 @@ workspace.
 ### Packaging
 
 - PyInstaller one-folder windowed build (no console) with generated icon
-  (`scripts/build_windows.ps1`, `packaging/omnireader.spec`).
+  (`scripts/build_windows.ps1`, `packaging/veyrion.spec`).
 - Inno Setup installer: shortcuts, per-user file associations for 20+
   formats, uninstall with optional data preservation
-  (`installer/omnireader_setup.iss`).
+  (`installer/veyrion_setup.iss`).
 
 ### Documentation
 
