@@ -42,6 +42,19 @@ No functional changes: every existing feature behaves exactly as before.
 - The welcome PDF's footer used a non-Latin-1 separator that extracted as a
   replacement character; the generator now emits ASCII punctuation only.
 
+### Internal
+
+- **Development checkout** — the local project folder is now
+  `Projects/VeyrionWorkspace`, matching the package, repository, and installer
+  naming. No tracked file content changed; git history, remotes, build output,
+  and test artifacts moved with the folder.
+- The development virtualenv embedded the old absolute path in its
+  console-script launchers and `activate` scripts, so `pip.exe` and `pytest.exe`
+  failed once the folder moved. The shims were repaired offline (44 launcher
+  binaries and 15 text files plus `pyvenv.cfg`) instead of recreating the
+  environment, which would have required re-resolving every pinned dependency
+  from the network.
+
 ## [1.0.0] — 2026-09-09
 
 Initial release. Built from scratch as a local-first desktop document

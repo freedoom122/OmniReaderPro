@@ -236,3 +236,42 @@ distribute the one-time installer as a release asset rather than in-repo.
   sidecar); later releases ship as `VeyrionWorkspace-Setup-<version>.exe` (see
   Branding). Installer binaries
   and the NSIS toolchain are gitignored; only sources are versioned.
+
+## Workspace rename — checkout folder, toolchain, and app data (2026-09-11)
+
+**Decision:** Rename the development checkout itself from
+`Projects/OmniReaderPro` to `Projects/VeyrionWorkspace` and repair the
+path-bound toolchain in place, rather than recreating it.
+
+**Details and rationale:**
+
+- The folder name was the last remaining carrier of the old product name. Git
+  records no reference to the containing directory name, so the rename needed
+  no content changes: history, branch, and the remote (already
+  `github.com/freedoom122/VeyrionWorkspace`) all remained valid, and build
+  output (`dist/`, `build/`) and test artifacts moved with the tree.
+- The parent `Desktop` checkout does not track anything under `Projects/`, so
+  the rename could not disturb that unrelated repository. It was verified with
+  `git ls-files Projects/OmniReaderPro` returning zero entries before moving.
+- The dev virtualenv was the one real casualty: distlib console-script launchers
+  and the `activate` scripts embed absolute interpreter paths, so `pip.exe` and
+  `pytest.exe` exited 1 after the move. Recreating the venv would have forced a
+  network reinstall of the entire pinned dependency set, so the paths were
+  rewritten directly — the old install root byte-replaced in 44 launcher
+  binaries, and 15 text shims plus `pyvenv.cfg` updated. This is safe because
+  the launcher's shebang is newline-terminated and its appended archive is
+  located by its own structure, not by a byte offset.
+- `python -m venv` and `python -m pytest` were unaffected throughout (they
+  derive the prefix from the interpreter's own location), so the repair could be
+  verified against a working baseline.
+- Stale PyInstaller work directory `build/omnireader` was deleted; `build/veyrion`
+  is the live one.
+- Application data written under the old name (`%APPDATA%\OmniReader Pro`) is
+  deliberately **not** relocated or deleted: it is the rollback source for the
+  first-run migration into `%APPDATA%\VeyrionWorkspace`, and deleting it would
+  remove that safety net. It is never read again once migration completes.
+- Remaining occurrences of the old name in tracked files are all intentional:
+  legacy data-directory names in `veyrion_workspace/__init__.py`, the installer's
+  upgrade cleanup, upgrade notes in the README, the historical changelog and
+  decision entries, and the migration tests that assert the old workspace is
+  carried forward.
